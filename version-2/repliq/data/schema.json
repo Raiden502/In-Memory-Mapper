@@ -1,0 +1,111 @@
+{
+    "name": "library",
+    "user": {
+        "name": "dummy",
+        "password": "dummy"
+    },
+    "tables": {
+        "department": {
+            "__tablename__": "department",
+            "__tabledesc__": "this is dept table",
+            "__version__": 1.0,
+            "schema": {
+                "dept_id": {
+                    "type": "int",
+                    "default_value": "",
+                    "pk": true,
+                    "nullable": false,
+                    "unique": false
+                },
+                "name": {
+                    "type": "str",
+                    "default_value": "",
+                    "pk": false,
+                    "nullable": true,
+                    "unique": false
+                },
+                "description": {
+                    "type": "str",
+                    "default_value": "",
+                    "pk": false,
+                    "nullable": true,
+                    "unique": false
+                },
+                "category": {
+                    "type": "str",
+                    "default_value": "",
+                    "pk": false,
+                    "nullable": false,
+                    "unique": false
+                },
+                "employees": {
+                    "type": "list",
+                    "default_value": null,
+                    "pk": false,
+                    "nullable": false,
+                    "unique": false
+                },
+                "estd_date": {
+                    "type": "datetime",
+                    "default_value": null,
+                    "pk": false,
+                    "nullable": false,
+                    "unique": false
+                }
+            }
+        },
+        "dept_emply": {
+            "__tablename__": "dept_emply",
+            "__tabledesc__": "this is employee table",
+            "__version__": 1.0,
+            "schema": {
+                "emp_id": {
+                    "type": "int",
+                    "default_value": "",
+                    "pk": true,
+                    "nullable": false,
+                    "unique": false
+                },
+                "name": {
+                    "type": "str",
+                    "default_value": "",
+                    "pk": false,
+                    "nullable": true,
+                    "unique": false
+                },
+                "description": {
+                    "type": "str",
+                    "default_value": "",
+                    "pk": false,
+                    "nullable": true,
+                    "unique": false
+                },
+                "category": {
+                    "type": "str",
+                    "default_value": "",
+                    "pk": false,
+                    "nullable": false,
+                    "unique": false
+                },
+                "status": {
+                    "type": "str",
+                    "default_value": "available",
+                    "pk": false,
+                    "nullable": false,
+                    "unique": false
+                },
+                "onboarding_date": {
+                    "type": "datetime",
+                    "default_value": null,
+                    "pk": false,
+                    "nullable": false,
+                    "unique": false
+                }
+            }
+        }
+    },
+    "data": {
+        "department": [],
+        "dept_emply": []
+    }
+}

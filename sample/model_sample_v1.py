@@ -102,6 +102,9 @@ class Database:
             },
             "tables":{
                 
+            },
+            "data":{
+                
             }
         }
     
@@ -128,6 +131,7 @@ class Database:
 
         table['schema'] = properties
         self.db['tables'][table['__tablename__']] = table
+        self.db['data'][table['__tablename__']] = []
         
     
     def getDb(self):
