@@ -1,9 +1,10 @@
 # ReplQ-Database
 
-A Custom in database library which supports orm, models, and peristant database designed in python and flask.
+A Custom database library which supports orm, models, and peristant database designed in python and flask.
 
 ## Notice
-This is a work in progress and is not ready to serve any purposes, designed to learn, understand the create a high level abstraction for designed orm based db. 
+This is a work in progress and is not ready to serve any purposes.
+Designed to learn, understand.how to create a high level abstraction for designed orm based db. 
 
 ## Samples
 
