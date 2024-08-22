@@ -11,19 +11,8 @@ class ReplQ(object, metaclass = DatabaseMeta):
     
     def __init__(self) -> None:
         if not hasattr(self, '_initialized'):
-            self.db = {
-                "name": "library",
-                "user" : {
-                    "name":"dummy",
-                    "password":"dummy",
-                },
-                "tables":{
-                    
-                },
-                "data":{
-                    
-                }
-            }
+            self.schema = {}
+            self.storage = {}
     
     def serialize_field(self, field: Field) -> Dict[str, Any]:
         return {
@@ -35,33 +24,32 @@ class ReplQ(object, metaclass = DatabaseMeta):
         }
     
     def model_init(self, Model):
-        table = {}
-        tableProperties = Model.__dict__
-        table['__tablename__'] = tableProperties.get('__tablename__')
-        table['__tabledesc__'] = tableProperties.get('__tabledesc__')
-        table['__version__'] = tableProperties.get('__version__')
-
         properties = {}
+        tableProperties = Model.__dict__
+        __tablename__ = tableProperties.get('__tablename__')
+        
         for field_name, field_value in tableProperties.items():
             if isinstance(field_value, Field):
                 properties[field_name] = self.serialize_field(field_value)
 
-        table['schema'] = properties
-        self.db['tables'][table['__tablename__']] = table
-        self.db['data'][table['__tablename__']] = []
+        self.schema[__tablename__] = properties
+        self.storage[__tablename__] = []
         
     def upgrade(self):
-        print("-->")
-        json_object = json.dumps(self.db, indent=4)
-        
+        schema_object = json.dumps(self.schema, indent=4)
+        storage_object = json.dumps(self.storage, indent=4)
         data_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
         os.makedirs(data_dir, exist_ok=True)
         
         # Writing to schema.json in the data directory
         schema_path = os.path.join(data_dir, "schema.json")
+        storage_path = os.path.join(data_dir, "storage.json")
         with open(schema_path, "w") as outfile:
-            outfile.write(json_object)
+            outfile.write(schema_object)
+            
+        with open(storage_path, "w") as outfile:
+            outfile.write(storage_object)
         
     
-    def getDb(self):
-        return self.db
+    def getSchema(self):
+        return self.schema

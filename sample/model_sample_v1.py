@@ -36,11 +36,13 @@ class Field:
         self.nullable:bool = nullable
         self.unique:bool = unique
     
-    def get_default(self):
-        if self.default_value_callback:
-            return self.default_value_callback()
-        return self.default_value
+    # def get_default(self):
+    #     if callable(self.default_value):
+    #         return self.default_value()
+    #     return self.default_value
 
+    # def set_value(self, value: Any):
+    #     self.value = value if value is not None else self.get_default()
 
 class TableMeta(type):
     
@@ -64,15 +66,15 @@ class TableMeta(type):
     
 class Model(metaclass = TableMeta):
 
-    def __init__(self) -> None:
-        self.fields = {}
-        
     def __init__(self, **kwargs: dict[str, Any]) -> None:
-        for field_name, field_value in self.__class__.__dict__.items():
-            if isinstance(field_value, Field):
-                field_copy = Field(**field_value.__dict__)
-                field_copy.set_value(kwargs.get(field_name, field_copy.get_default()))
-                setattr(self, field_name, field_copy)
+        pass
+        # self.fields = {}
+        # for field_name, field_value in self.__class__.__dict__.items():
+        #     if isinstance(field_value, Field):
+        #         field_copy = Field(**field_value.__dict__)
+        #         field_copy.set_value(kwargs.get(field_name, field_copy.get_default()))
+        #         setattr(self, field_name, field_copy)
+                
 
 class User(Model):
     
@@ -135,10 +137,46 @@ class Database:
         
     
     def getDb(self):
-        return json.dumps(self.db, indent=4)
+        return self.db
+
+
+class Orm(Database):
     
+    def __init__(self) -> None:
+        self.modal = None
+        self.fields = {}
+        
+    def modal(self, modal):
+        self.modal = modal
+        return self
     
+    def select(self):
+        pass
+    
+    def insert(self, **kwargs):
+        self.fields = kwargs
+        return self
+    
+    def execute(self):
+        tableProperties = self.modal.__dict__
+        __tablename__ = tableProperties.get('__tablename__')
+    
+        
+
 if __name__ == '__main__':
     db = Database()
     db.model_init(User)
     print(db.getDb())
+    
+    
+    query = Orm()
+    new_user = query.modal(User).insert({
+        "book_id":0,
+        "name":"asasa",
+        "description":None,
+        "category":"asas",
+        "tags":["asa"],
+        "status":"available"
+    })
+    
+    new_user.execute()

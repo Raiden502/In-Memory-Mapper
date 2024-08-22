@@ -11,7 +11,7 @@ def create_app():
 
     @app.route('/', methods=['GET', 'POST'])
     def find_user():
-        data = db.getDb()
+        data = db.getSchema()
         return jsonify(data)
     
     return app
