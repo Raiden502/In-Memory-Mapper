@@ -417,7 +417,7 @@ insertQuery.insert(Orders).fields([
 
 # select Query
 query = SelectOrm()
-res = query.select(User.id, User.name, User.data).table(User).where([]).order_by([_asc(User.name)])
+res = query.select(User.id, User.name, User.data).table(User).where([_eq(User.name, "B")]).order_by([_asc(User.name)])
 print(res.execute())
 
 res = query.select(Orders.id, Orders.name,Orders.userid).table(Orders).where([]).order_by([_asc(User.name)])
