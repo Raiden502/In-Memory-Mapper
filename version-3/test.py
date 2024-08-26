@@ -237,7 +237,6 @@ class User(Model):
 
 
 # insert query
-
 insertQuery = InsertOrm()
 insertQuery.insert(User).fields([
     {"name": "A", "data": 4, "num":2},
@@ -248,5 +247,5 @@ insertQuery.insert(User).fields([
 
 # select Query
 query = Orm()
-res = query.select(User, User.name, User.data, User.num).group_by([User.data, User.num])
+res = query.select(User, User.name, User.data, User.num).where([_eq(User.name, "C")])
 print(res.execute())
