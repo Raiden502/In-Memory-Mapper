@@ -10,7 +10,6 @@ def _eq(field: Any, value: Any):
     '''
     
     def callback(headers, data):
-        
         if isinstance(value, ResultantSet):
             if len(value.data) > 1:
                 raise Exception("Compares only with signle record")
@@ -221,3 +220,34 @@ def _asc(field):
 def _desc(field):
         
     return (lambda headers, data: data[headers[field.name]], True)
+
+
+def _on(f1, f2, operator):
+    
+    if not isinstance(f1, Field) or not isinstance(f2, Field):
+        raise ValueError("values should be instance of field")
+    
+    def callback(h1, d1, h2, d2):
+        if operator=='=':
+            return d1[h1[f1.name]] == d2[h2[f2.name]]
+        
+        elif operator=='<=':
+            return d1[h1[f1.name]] <= d2[h2[f2.name]]
+        
+        elif operator == '>=':
+            return d1[h1[f1.name]] >= d2[h2[f2.name]]
+        
+        elif operator == '<':
+            return d1[h1[f1.name]] < d2[h2[f2.name]]
+        
+        elif operator == '>':
+            return d1[h1[f1.name]] > d2[h2[f2.name]]
+
+        elif operator == '!=':
+            return d1[h1[f1.name]] != d2[h2[f2.name]]
+
+        else:
+            raise ValueError("Operator not defined for on condition")
+    
+    return callback
+        

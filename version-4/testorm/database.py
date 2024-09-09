@@ -4,7 +4,7 @@ from .schema import Model, Field
 class ResultantSet:
     def __init__(self, data=[], meta={}) -> None:
         self.data = data
-        self.__meta__ = meta
+        self.headers = meta
         
 
 class Table:
