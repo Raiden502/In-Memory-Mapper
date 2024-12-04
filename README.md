@@ -19,7 +19,7 @@ Designed and implemented a In-Memory Database, Users can define models with vari
 1. Clone this repository:
    ```bash
    git clone https://github.com/Raiden502/In-Memory-Mapper
-   cd in-memory-db
+   cd In-Memory-Mapper
 2. Activate the virtual environment:
     ``` 
     .\venv\Scripts\activate
