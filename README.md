@@ -35,30 +35,30 @@ Designed and implemented a In-Memory Database, Users can define models with vari
     pip install -r requirements.txt
 ```
 ## Run
-Use `Version 6` of the module to define the schema for your models and begin interacting with the in-memory database.
+Use `Version 1_3` of the module to define the schema for your models and begin interacting with the in-memory database.
 ```
-    cd version-6
+    cd version_1_3
     py run.py
 ```
 
 ## Change Log
-**Version 01: Initial Design and Schema Testing** 
+**Version 0.1: Initial Design and Schema Testing** 
 - Created the schema for user-defined models.
 - Extracted and tested model properties.
 
-**Version 02 & 03: Database Design, Migrations and Operators**
+**Version 0.5 & 0.6: Database Design, Migrations and Operators**
 - Designed the core in-memory database structure.
 - Added support for database migrations.
 - Added support for Orm's.
 - Introduced callbacks for comparison and string operators.
 - Improved support for Orm's.
 
-**Version 04: Query Syntax and Execution**
+**Version 1: Query Syntax and Execution**
 - Implemented method chaining for queries.
 - Unified the data exchange class for query execution.
 - Added support for joins and query execution order.
 
-**Version 05 & 06: Enhanced Query Features**
+**Version 1.1 & 1.3: Enhanced Query Features**
 - Added built-in support for comparison and string operators.
 - Simplified the model properties extraction process.
 - Enabled subqueries for more complex queries.
