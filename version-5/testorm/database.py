@@ -10,9 +10,10 @@ class ResultantSet:
 class Table:
     
     def __init__(self) -> None:
-        self.data : List[Tuple[Any]] = []
+        self.data : List[List[Any]] = []
         self.headers : Dict[str, int] = {}
         self.properties : Dict[str, Any] = {}
+        self.constraints : Dict[str, Any] = {}
 
 
 class Database:
@@ -37,8 +38,15 @@ class Database:
         index = 0
         for field_name, field_value in tableProperties.items():
             if isinstance(field_value, Field):
-                table.headers[field_value.name] = index
+                table.headers[field_value.get_name()] = index
+                table.constraints[field_value.get_name()] = {
+                    'type': field_value.type,
+                    'nullable': field_value.nullable,
+                    'unique': field_value.unique,
+                    'default': field_value.get_value(),
+                }
                 index +=1
+                
         
         self.database[__classname__] = table
         

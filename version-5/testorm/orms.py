@@ -1,7 +1,11 @@
 from typing import List, Any, Dict, Tuple
 from .database import Database, Table, ResultantSet
 
-class SelectOrm:
+class Select:
+    
+    LEFT = 'LEFT'
+    RIGHT = 'RIGHT'
+    INNER = 'INNER'
     
     def __init__(self, model = None):
         self.__model = model
@@ -14,55 +18,51 @@ class SelectOrm:
         self.__joinModel = None
         self.__joinType = None
 
-    def select(self, *field) -> 'SelectOrm':
+    def select(self, *field) -> 'Select':
+        '''
+            select offers fields to be filtered from dataset
+        '''
         self.__field = field
         return self
     
-    def table(self, model = None):
+    def model(self, model = None):
+        '''
+            select the model to be fetched
+        '''
         self.__model = model
         return self
         
-    def where(self, *conditions: List[Any]) -> 'SelectOrm':
+    def filter(self, *conditions: List[Any]) -> 'Select':
+        '''
+            filters the data based on condition
+        '''
         self.__conditions = conditions
         return self
     
-    def order_by(self, *conditions: List[Any]):
+    def sort(self, *conditions: List[Any]):
+        '''
+            sort the data based on conditions
+        '''
         self.__orderByCond = conditions
         return self
     
-    def group_by(self, *conditions: List[Any]) -> 'SelectOrm':
+    def cluster(self, *conditions: List[Any]) -> 'Select':
+        '''
+            clusters the data based on conditions
+        '''
         self.__groupByCond = conditions
         return self
     
-    def join(self, joinModel=None, condition=None):
-        self.__joinModel = joinModel
+    def join(self, model=None, condition=None, type = None):
+        self.__joinModel = model
         self.__onCondition = condition
-        self.__joinType = "inner"
+        self.__joinType = self.INNER
         
         if self.__joinModel == None or self.__onCondition == None:
             raise ValueError('joinModel and onCondition must be set')
 
         return self
-    
-    def leftJoin(self, joinModel=None, condition=None):
-        self.__joinModel = joinModel
-        self.__onCondition = condition
-        self.__joinType = "left"
         
-        if self.__joinModel == None or self.__onCondition == None:
-            raise ValueError('joinModel and onCondition must be set')
-
-        return self
-
-    def rightJoin(self, joinModel=None, condition=None):
-        self.__joinModel = joinModel
-        self.__onCondition = condition
-        self.__joinType = "right"
-        
-        if self.__joinModel == None or self.__onCondition == None:
-            raise ValueError('joinModel and onCondition must be set')
-        return self
-    
     def __computeJoins(self, currentTable, joinTable, joinType, onCondition):
         joinData = joinTable.data
         currData = currentTable.data
@@ -71,7 +71,7 @@ class SelectOrm:
         tempData = []
         tempHeaders ={}
         
-        if joinType == "left":
+        if joinType == self.LEFT:
             for obj in currData:
                 condition_passed = False
                 for joinObj in joinData:
@@ -81,10 +81,10 @@ class SelectOrm:
                         condition_passed = True
                         
                 if not condition_passed:
-                    tempTuple = obj+tuple([None]*len(joinObj))
+                    tempTuple = obj+([None]*len(joinObj))
                     tempData.append(tempTuple)
         
-        elif joinType == "right":
+        elif joinType == self.RIGHT:
             for joinObj in joinData:
                 condition_passed = False
                 for obj in currData:
@@ -94,7 +94,7 @@ class SelectOrm:
                         condition_passed = True
                         
                 if not condition_passed:
-                    tempTuple = tuple([None]*len(obj))+joinObj
+                    tempTuple = ([None]*len(obj))+joinObj
                     tempData.append(tempTuple)
                     
         else:
@@ -125,12 +125,12 @@ class SelectOrm:
     
     def __computeGroupBy(self, filteredData):
         temp_data = ResultantSet(filteredData.data, filteredData.headers)
-        temp_data.data = sorted(temp_data.data, key = lambda obj: tuple(obj[temp_data.headers[field.name]] for field in self.__groupByCond))
+        temp_data.data = sorted(temp_data.data, key = lambda obj: (obj[temp_data.headers[field.get_name()]] for field in self.__groupByCond))
         return temp_data
     
     def __computeOrderBy(self, filteredData):
         filteredData.data.sort(
-                key=lambda data: tuple(key(filteredData.headers, data) for key, _ in self.__orderByCond),
+                key=lambda data: (key(filteredData.headers, data) for key, _ in self.__orderByCond),
                 reverse=any(reverse for _, reverse in self.__orderByCond)
             )
         return filteredData
@@ -141,8 +141,8 @@ class SelectOrm:
         temp_data = []
         
         for index, field in enumerate(self.__field):
-            temp_index.append(filteredData.headers[f'{field.name}'])
-            temp_meta[f'{field.name}'] = index
+            temp_index.append(filteredData.headers[f'{field.get_name()}'])
+            temp_meta[f'{field.get_name()}'] = index
         
         
         for obj in filteredData.data:
@@ -150,7 +150,7 @@ class SelectOrm:
             for field in temp_index:
                 temp_tuple.append(obj[field])
             
-            temp_data.append(tuple(temp_tuple))
+            temp_data.append(temp_tuple)
         
         filteredData.headers = temp_meta
         filteredData.data = temp_data
@@ -180,7 +180,7 @@ class SelectOrm:
         return filteredData
 
 
-class InsertOrm:
+class Insert:
     
     def __init__(self, model = None) -> None:
         self.__model = model
@@ -196,18 +196,22 @@ class InsertOrm:
         
         return self
 
-    def fields(self, rows : Dict[str, Any] = {}) ->  'InsertOrm':
+    def fields(self, rows : Dict[str, Any] = {}) ->  'Insert':
         self.__record = rows
         return self
     
     def execute(self):
         headers = self.__db.database[self.__model.__classname__].headers
         tabledata = self.__db.database[self.__model.__classname__].data
+        constraints = self.__db.database[self.__model.__classname__].constraints
         total = len(headers)
-        
+
         for row in self.__record:
             temp = [None] * total
             for k, pos in headers.items():
-                temp[pos] = row[k.split('.')[1]]
+                field_key = k.split('.')[1]
+                temp[pos] = row.get(field_key,  constraints[f'{self.__model.__classname__}.{field_key}']['default'])
             
-            tabledata.append(tuple(temp))
+            tabledata.append(temp)
+            
+
