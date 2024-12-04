@@ -40,9 +40,11 @@ Use `Version 6` of the module to define the schema for your models and begin int
 **Version 02: Database Design and Migrations**
 - Designed the core in-memory database structure.
 - Added support for database migrations.
+- Added support for Orm's.
 
 **Version 03: Operator Support**
 - Introduced callbacks for comparison and string operators.
+- Improved support for Orm's.
 
 **Version 04: Query Syntax and Execution**
 - Implemented method chaining for queries.
