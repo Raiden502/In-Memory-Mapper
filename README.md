@@ -51,7 +51,6 @@ Use `Version 1_3` of the module to define the schema for your models and begin i
 - Added support for database migrations.
 - Added support for Orm's.
 - Introduced callbacks for comparison and string operators.
-- Improved support for Orm's.
 
 **Version 1: Query Syntax and Execution**
 - Implemented method chaining for queries.
