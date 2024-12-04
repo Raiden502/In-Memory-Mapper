@@ -20,17 +20,22 @@ Designed and implemented a In-Memory Database, Users can define models with vari
    ```bash
    git clone https://github.com/Raiden502/In-Memory-Mapper
    cd In-Memory-Mapper
-2. Activate the virtual environment:
+   ```
+   
+2. Virtual environment and Requirements:
     ``` 
     .\venv\Scripts\activate
-
-3. Install the required packages:
-    ```
     pip install -r requirements.txt
+    ```
 
+3. Run the code:
 
 ## Run
 Use `Version 6` of the module to define the schema for your models and begin interacting with the in-memory database.
+```
+    cd version-6
+    py run.py
+```
 
 ## Change Log
 **Version 01 : Initial Design and Schema Testing** 
