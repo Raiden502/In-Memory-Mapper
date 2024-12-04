@@ -13,6 +13,13 @@ Designed and implemented a In-Memory Database, Users can define models with vari
 - **Joins and Subqueries**: Execute complex queries with built-in support for subqueries and joins.
 - **Operator Callbacks**: Built-in support for comparison and string operators.
 
+## **Future improvements and features**
+- support for data types, relationships and triggers
+- support for delete, update and truncate
+- support for database server and client sdk
+- support for data encryption and security features
+- support for multithreading and performance improvements
+
 ## **Installation and Usage**
 
 ### **Setup**
@@ -35,16 +42,14 @@ Use `Version 6` of the module to define the schema for your models and begin int
 ```
 
 ## Change Log
-**Version 01 : Initial Design and Schema Testing** 
+**Version 01: Initial Design and Schema Testing** 
 - Created the schema for user-defined models.
 - Extracted and tested model properties.
 
-**Version 02: Database Design and Migrations**
+**Version 02 & 03: Database Design, Migrations and Operators**
 - Designed the core in-memory database structure.
 - Added support for database migrations.
 - Added support for Orm's.
-
-**Version 03: Operator Support**
 - Introduced callbacks for comparison and string operators.
 - Improved support for Orm's.
 

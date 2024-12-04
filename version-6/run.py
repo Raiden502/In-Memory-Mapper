@@ -33,7 +33,6 @@ db.migrate(Orders)
 
 # insert query
 
-
 insert(Organization).fields([
     {"orgId":1, "orgName":"Testing"},
     {"orgId":2, "orgName":"Testing2"},
