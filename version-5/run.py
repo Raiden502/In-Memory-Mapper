@@ -58,13 +58,31 @@ insertQuery.insert(Orders).fields([
 # select Query
 query = Select()
 
-orgQuery = query.select(Organization.orgId).model(Organization).filter(_eq(Organization.orgId, 1)).execute()
-print(orgQuery.data)
+# orgQuery = query.select(Organization.orgId).model(Organization).filter(_eq(Organization.orgId, 1)).execute()
+# print(orgQuery.data)
 
-userRes = query.select(
-            User.userId, User.userName, User.orgId, 
-            Orders.id, Orders.name, Orders.userId
-        ).model(User).join(Orders, _on(User.userId, Orders.userId, "="), type=query.RIGHT)\
-        .filter(_eq(Orders.userId, 1)).execute()
+# userRes = query.select(
+#             User.userId, User.userName, User.orgId, 
+#             Orders.id, Orders.name, Orders.userId
+#         ).model(User).join(Orders, _on(User.userId, Orders.userId, "="), type=query.RIGHT)\
+#         .filter(_eq(Orders.userId, 1)).execute()
 
-print(userRes.data)
+# print(userRes.data)
+
+
+# res = query.select(Orders.id, Orders.name).model(Orders).filter(
+#         _in(
+#             Orders.userId, 
+#             [1,2]
+#         )
+#     ).execute()
+
+query2 = Select()
+res = query.select(Orders.id, Orders.name).model(Orders).filter(
+        _eq(
+            Orders.userId, 
+            query2.select(User.userId).model(User).filter(_eq(User.userId, 3)).execute()
+        )
+    ).execute()
+
+print(res.data)

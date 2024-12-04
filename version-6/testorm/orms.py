@@ -1,15 +1,16 @@
 from typing import List, Any, Dict, Tuple
-from .database import Database, Table, ResultantSet
+from .resultant_set import ResultantSet
+from .database import Database, Table
 
-class Select:
+class select:
     
     LEFT = 'LEFT'
     RIGHT = 'RIGHT'
     INNER = 'INNER'
     
-    def __init__(self, model = None):
+    def __init__(self, *fields, model = None):
         self.__model = model
-        self.__field :List[Any] = []
+        self.__field :List[Any] = fields
         self.__conditions :List[Any] = []
         self.__orderByCond :List[Any] = []
         self.__groupByCond :List[Any] = []
@@ -17,13 +18,6 @@ class Select:
         self.__onCondition = None
         self.__joinModel = None
         self.__joinType = None
-
-    def select(self, *field) -> 'Select':
-        '''
-            select offers fields to be filtered from dataset
-        '''
-        self.__field = field
-        return self
     
     def model(self, model = None):
         '''
@@ -32,7 +26,7 @@ class Select:
         self.__model = model
         return self
         
-    def filter(self, *conditions: List[Any]) -> 'Select':
+    def filter(self, *conditions) -> 'select':
         '''
             filters the data based on condition
         '''
@@ -46,7 +40,7 @@ class Select:
         self.__orderByCond = conditions
         return self
     
-    def cluster(self, *conditions: List[Any]) -> 'Select':
+    def cluster(self, *conditions: List[Any]) -> 'select':
         '''
             clusters the data based on conditions
         '''
@@ -129,10 +123,11 @@ class Select:
         return temp_data
     
     def __computeOrderBy(self, filteredData):
-        filteredData.data.sort(
-                key=lambda data: (key(filteredData.headers, data) for key, _ in self.__orderByCond),
-                reverse=any(reverse for _, reverse in self.__orderByCond)
-            )
+        filteredData.data = sorted(
+            filteredData.data,
+            key=lambda data: tuple(data[filteredData.headers[key]] for key, _ in self.__orderByCond),
+            reverse=any(reverse for _, reverse in self.__orderByCond)  
+        )
         return filteredData
     
     def __computeSelect(self, filteredData):
@@ -180,23 +175,18 @@ class Select:
         return filteredData
 
 
-class Insert:
+class insert:
     
     def __init__(self, model = None) -> None:
+        
         self.__model = model
         self.__record : Dict[str, Any] = {}
         self.__db : Database = Database()
-    
-    def insert(self, model = None):
-        if model:
-            self.__model = model
-            
-            if self.__model.__classname__ not in self.__db.database:
-                raise Exception(f"{self.__model.__classname__} model not migrated")
         
-        return self
+        if self.__model.__classname__ not in self.__db.database:
+            raise Exception(f"{self.__model.__classname__} model not migrated")
 
-    def fields(self, rows : Dict[str, Any] = {}) ->  'Insert':
+    def fields(self, rows : Dict[str, Any] = {}) ->  'insert':
         self.__record = rows
         return self
     
