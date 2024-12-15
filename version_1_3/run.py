@@ -1,4 +1,4 @@
-from testorm import Field, Database, insert, select, Model, on_, or_
+from testorm import Field, Database, insert, select, Model, on_, or_, insert
 
 class Organization(Model):
     orgId = Field(type=2, default="")

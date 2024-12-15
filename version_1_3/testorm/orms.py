@@ -205,3 +205,159 @@ class insert:
             tabledata.append(temp)
             
 
+class delete:
+    LEFT = 'LEFT'
+    # RIGHT = 'RIGHT'
+    # INNER = 'INNER'
+    
+    def __init__(self, *fields, model = None):
+        self.__model = model
+        self.__conditions :List[Any] = []
+        self.__groupByCond :List[Any] = []
+    
+    def filter(self, *conditions) -> 'select':
+        '''
+            filters the data based on condition
+        '''
+        self.__conditions = conditions
+        return self
+    
+    def join(self, model=None, condition=None):
+        self.__joinModel = model
+        self.__onCondition = condition
+        self.__joinType = self.INNER
+        
+        if self.__joinModel == None or self.__onCondition == None:
+            raise ValueError('joinModel and onCondition must be set')
+
+        return self
+    
+    def __computeJoins(self, currentTable, joinTable, joinType, onCondition):
+        joinData = joinTable.data
+        currData = currentTable.data
+        joinHeaders = joinTable.headers
+        currHeaders = currentTable.headers
+        tempData = []
+        tempHeaders ={}
+        
+        if joinType == self.LEFT:
+            for obj in currData:
+                condition_passed = False
+                for joinObj in joinData:
+                    if onCondition(currHeaders, obj, joinHeaders, joinObj):
+                        tempTuple = obj+joinObj
+                        tempData.append(tempTuple)
+                        condition_passed = True
+                        
+                if not condition_passed:
+                    tempTuple = obj+([None]*len(joinObj))
+                    tempData.append(tempTuple)
+
+        index = 0
+        for k in currHeaders.keys():
+            tempHeaders[k] = index
+            index+=1
+
+        for k in joinHeaders.keys():
+            tempHeaders[k] = index
+            index+=1
+
+        return ResultantSet(tempData, tempHeaders)
+    
+    def __computeFilters(self, filteredData):
+        temp_data = []
+        for item in filteredData.data:
+            if(all([callback(filteredData.headers, item) for callback in self.__conditions])):
+                temp_data.append(item)
+        
+        return ResultantSet(temp_data, filteredData.headers)
+    
+    def execute(self):
+        currentTable = self.__db.database[self.__model.__classname__]
+        filteredData = ResultantSet(currentTable.data, currentTable.headers)
+        
+        if self.__joinModel:
+            joinTable = self.__db.database[self.__joinModel.__classname__]
+            filteredData = self.__computeJoins(filteredData, joinTable, self.__joinType, self.__onCondition)
+        
+        if self.__conditions:
+            filteredData = self.__computeFilters(filteredData)
+
+
+class update:
+    LEFT = 'LEFT'
+    # RIGHT = 'RIGHT'
+    # INNER = 'INNER'
+    
+    def __init__(self, *fields, model = None):
+        self.__model = model
+        self.__conditions :List[Any] = []
+        self.__groupByCond :List[Any] = []
+    
+    def filter(self, *conditions) -> 'select':
+        '''
+            filters the data based on condition
+        '''
+        self.__conditions = conditions
+        return self
+    
+    def join(self, model=None, condition=None):
+        self.__joinModel = model
+        self.__onCondition = condition
+        self.__joinType = self.INNER
+        
+        if self.__joinModel == None or self.__onCondition == None:
+            raise ValueError('joinModel and onCondition must be set')
+
+        return self
+    
+    def __computeJoins(self, currentTable, joinTable, joinType, onCondition):
+        joinData = joinTable.data
+        currData = currentTable.data
+        joinHeaders = joinTable.headers
+        currHeaders = currentTable.headers
+        tempData = []
+        tempHeaders ={}
+        
+        if joinType == self.LEFT:
+            for obj in currData:
+                condition_passed = False
+                for joinObj in joinData:
+                    if onCondition(currHeaders, obj, joinHeaders, joinObj):
+                        tempTuple = obj+joinObj
+                        tempData.append(tempTuple)
+                        condition_passed = True
+                        
+                if not condition_passed:
+                    tempTuple = obj+([None]*len(joinObj))
+                    tempData.append(tempTuple)
+
+        index = 0
+        for k in currHeaders.keys():
+            tempHeaders[k] = index
+            index+=1
+
+        for k in joinHeaders.keys():
+            tempHeaders[k] = index
+            index+=1
+
+        return ResultantSet(tempData, tempHeaders)
+    
+    def __computeFilters(self, filteredData):
+        temp_data = []
+        for item in filteredData.data:
+            if(all([callback(filteredData.headers, item) for callback in self.__conditions])):
+                temp_data.append(item)
+        
+        return ResultantSet(temp_data, filteredData.headers)
+    
+    def execute(self):
+        currentTable = self.__db.database[self.__model.__classname__]
+        filteredData = ResultantSet(currentTable.data, currentTable.headers)
+        
+        if self.__joinModel:
+            joinTable = self.__db.database[self.__joinModel.__classname__]
+            filteredData = self.__computeJoins(filteredData, joinTable, self.__joinType, self.__onCondition)
+        
+        if self.__conditions:
+            filteredData = self.__computeFilters(filteredData)

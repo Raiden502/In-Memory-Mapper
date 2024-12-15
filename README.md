@@ -10,12 +10,13 @@ Designed and implemented a In-Memory Database, Users can define models with vari
 - **Custom ORM**: Enables queries with intuitive, Pythonic syntax.
 - **CRUD Operations**: Comprehensive support for Create, Read, Update, and Delete actions.
 - **Model-Based Schema**: Easily define models with fields that represent the database schema.
-- **Joins and Subqueries**: Execute complex queries with built-in support for subqueries and joins.
+- **Joins, Subqueries, Clusters**: Execute complex queries with built-in support for subqueries, joins, cluster(Group by).
 - **Operator Callbacks**: Built-in support for comparison and string operators.
+- **Datatypes and constraints**: Supports python datatypes and constraints.
 
 ## **Future improvements and features**
-- support for data types, relationships and triggers
-- support for delete, update and truncate
+- support for aggergate functions, arthematic operators, alias, cte
+- support for triggers
 - support for database server and client sdk
 - support for data encryption and security features
 - support for multithreading and performance improvements
@@ -35,9 +36,9 @@ Designed and implemented a In-Memory Database, Users can define models with vari
     pip install -r requirements.txt
 ```
 ## Run
-Use `Version 1_3` of the module to define the schema for your models and begin interacting with the in-memory database.
+Use `Version 1_4` of the module to define the schema for your models and begin interacting with the in-memory database.
 ```
-    cd version_1_3
+    cd version_1_4
     py run.py
 ```
 
@@ -63,6 +64,13 @@ Use `Version 1_3` of the module to define the schema for your models and begin i
 - Enabled subqueries for more complex queries.
 - Optimized ORM syntax to align with traditional ORM designs.
 - Resolved existing bugs and improved performance.
+
+**Version 1.4: Data Types and CRUD Operations**
+- Added built-in support for python data types
+- Added constraints such as unique, nullable, default primary key.
+- Added update and delete queries.
+- Added clustering and filter clusters.
+
 
 ## Contributing
 Contributions are welcome! If you'd like to enhance the project or report issues, feel free to fork the repository, create a new branch, and submit a pull request.
