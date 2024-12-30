@@ -195,6 +195,9 @@ class select:
             
         if isinstance(self._model, ResultantSet):
             filtered_data = self._model
+
+        if isinstance(self._model, select):
+            filtered_data = self._model.execute()
         
         if self._join_model:
             join_table = self._db.database[self._join_model.__classname__]

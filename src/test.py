@@ -26,11 +26,11 @@ userRes = select(
             alias((User.cost + Address.delivery_cost * 2), 'addon'),
             alias(User.cost  == 1, 'compare'),
             alias(User.cost  == Address.delivery_cost, 'compare2'),
-        ).model(User).join(Address, on_(User._id, Address.user_id, "="), type=select.RIGHT).execute()
+        ).model(User).join(Address, on_(User._id, Address.user_id, "="), type=select.RIGHT)
 
 
-print(userRes.columns)
-print(userRes.data)
+# print(userRes.columns)
+# print(userRes.data)
 
 
 userRes = select(User.user_name, 'compare').model(userRes).execute()
