@@ -1,1 +1,0 @@
-from models.user_schema import UserInfo
