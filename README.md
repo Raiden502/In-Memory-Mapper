@@ -9,15 +9,14 @@ Creating a Database where Users can define models with various fields, reflectin
 - **Custom ORM**: Enables queries with intuitive, Pythonic syntax.
 - **CRUD Operations**: Comprehensive support for Create, Read, Update, and Delete actions.
 - **Model-Based Schema**: Easily define models with fields that represent the database schema.
-- **Joins, Subqueries, Clusters**: Execute complex queries with built-in support for subqueries, joins, cluster(Group by).
+- **Joins, Subqueries**: Execute complex queries with built-in support for subqueries, joins
 - **Operator Callbacks**: Built-in support for comparison and string operators.
 - **Datatypes and constraints**: Supports python datatypes and constraints.
 
 ## **Future improvements and features**
-- support for aggergate functions, arthematic operators, alias, cte, triggers
+- support for aggregate functions, group by, triggers
 - support for database server and client sdk, schema versioning
-- support for data storage
-- support for data encryption and security features
+- support for persistent storage , data encryption and security features
 - support for multi threading/processing and performance improvements
 
 ## **Installation and Usage**
@@ -68,8 +67,11 @@ Use `Version 1_4` of the module to define the schema for your models and begin i
 - Added built-in support for python data types
 - Added constraints such as unique, nullable, default primary key.
 - Added update and delete queries.
-- Added clustering and filter clusters.
 
+**Version 1.5: Alias, Common Table expression and expressions**
+- Added support for alias for custom values,
+- Added support for arithmetic operators, simple and complex expression calculation.
+- Added support query from previous query and common table expression
 
 ## Contributing
 Contributions are welcome! If you'd like to enhance the project or report issues, feel free to fork the repository, create a new branch, and submit a pull request.
