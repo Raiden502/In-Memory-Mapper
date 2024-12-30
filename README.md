@@ -1,9 +1,8 @@
 # **In-Memory Mapper**
 
-Designed and implemented a In-Memory Database, Users can define models with various fields, reflecting the schema of the database. The database operates entirely in-memory, storing data as objects, with no integration with traditional SQL or NoSQL databases. Additionally i developed a Custom ORM's that allows users to query the database using Pythonic syntax and Supports full CRUD operations, providing essential database management features. This Solution which easily integrates with existing server-side applications, offering a lightweight for in-memory data management.
+Creating a Database where Users can define models with various fields, reflecting the schema of the database. The database operates entirely in-memory, storing data as objects, with no integration with traditional SQL or NoSQL databases. Additionally i developed a Custom ORM's that allows users to query the database using Pythonic syntax and Supports full CRUD operations, providing essential database management features similar to both Sql and NoSql.
 
 ⚠️ **Note**: This project is under development and is not yet production-ready. It is primarily intended for learning and exploring ORM-based database abstractions and database designing
-
 
 ## **Features**
 - **In-Memory Database**: Operates entirely in memory, independent of external SQL/NoSQL databases.
@@ -15,11 +14,11 @@ Designed and implemented a In-Memory Database, Users can define models with vari
 - **Datatypes and constraints**: Supports python datatypes and constraints.
 
 ## **Future improvements and features**
-- support for aggergate functions, arthematic operators, alias, cte
-- support for triggers
-- support for database server and client sdk
+- support for aggergate functions, arthematic operators, alias, cte, triggers
+- support for database server and client sdk, schema versioning
+- support for data storage
 - support for data encryption and security features
-- support for multithreading and performance improvements
+- support for multi threading/processing and performance improvements
 
 ## **Installation and Usage**
 
